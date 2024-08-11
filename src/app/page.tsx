@@ -3,6 +3,7 @@ import React, { useState, FormEvent } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { Bot } from "lucide-react";
 
 export default function Component() {
   const [link, setLink] = useState<string>("");
@@ -19,6 +20,7 @@ export default function Component() {
       <main className="container mx-auto flex flex-1 flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
         <div className="mx-auto w-full max-w-md space-y-6">
           <div className="text-center">
+            <Bot className="w-24 h-24 mx-auto text-white mb-3" />
             <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Chat with our AI Bot
             </h1>
@@ -45,9 +47,6 @@ export default function Component() {
           </form>
         </div>
       </main>
-      <footer className="bg-gray-950 py-2 text-center text-muted-foreground">
-        <p>&copy; 2024 askhere | All rights reserved</p>
-      </footer>
     </div>
   );
 }
