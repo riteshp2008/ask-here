@@ -1,41 +1,41 @@
-import { ChatWrapper } from "@/components/ChatWrapper"
-import { ragChat } from "@/lib/rag-chat"
-import { redis } from "@/lib/redis"
-import { cookies } from "next/headers"
+import { ChatWrapper } from "@/components/ChatWrapper";
+import { ragChat } from "@/lib/rag-chat";
+import { redis } from "@/lib/redis";
+import { cookies } from "next/headers";
+import { useRouter } from "next/router";
 
 interface PageProps {
   params: {
-    url: string | string[] | undefined
-  }
-}
-
-function reconstructUrl({ url }: { url: string[] }) {
-  const decodedComponents = url.map((component) => decodeURIComponent(component))
-
-  return decodedComponents.join("/")
+    url: string;
+  };
 }
 
 const Page = async ({ params }: PageProps) => {
-  const sessionCookie = cookies().get("sessionId")?.value
-  const reconstructedUrl = reconstructUrl({ url: params.url as string[] })
+  const sessionCookie = cookies().get("sessionId")?.value;
+  const decodedUrl = decodeURIComponent(params.url);
 
-  const sessionId = (reconstructedUrl + "--" + sessionCookie).replace(/\//g, "")
+  const sessionId = (decodedUrl + "--" + sessionCookie).replace(/\//g, "");
 
-  const isAlreadyIndexed = await redis.sismember("indexed-urls", reconstructedUrl)
+  const isAlreadyIndexed = await redis.sismember("indexed-urls", decodedUrl);
 
-  const initialMessages = await ragChat.history.getMessages({ amount: 10, sessionId })
+  const initialMessages = await ragChat.history.getMessages({
+    amount: 10,
+    sessionId,
+  });
 
   if (!isAlreadyIndexed) {
     await ragChat.context.add({
       type: "html",
-      source: reconstructedUrl,
+      source: decodedUrl,
       config: { chunkOverlap: 50, chunkSize: 200 },
-    })
+    });
 
-    await redis.sadd("indexed-urls", reconstructedUrl)
+    await redis.sadd("indexed-urls", decodedUrl);
   }
 
-  return <ChatWrapper sessionId={sessionId} initialMessages={initialMessages} />
-}
+  return (
+    <ChatWrapper sessionId={sessionId} initialMessages={initialMessages} />
+  );
+};
 
-export default Page
+export default Page;

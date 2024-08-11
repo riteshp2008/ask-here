@@ -3,7 +3,6 @@
 import { Button, Textarea } from "@nextui-org/react";
 import { Send } from "lucide-react";
 import { type useChat } from "ai/react";
-import { root } from "postcss";
 
 type HandleInputChange = ReturnType<typeof useChat>["handleInputChange"];
 type HandleSubmit = ReturnType<typeof useChat>["handleSubmit"];
@@ -26,7 +25,7 @@ export const ChatInput = ({
     <div className="z-10 bg-zinc-900 absolute bottom-0 left-0 w-full">
       <div className="mx-2 flex flex-row gap-3 md:mx-4 md:last:mb-6 lg:mx-auto lg:max-w-2xl xl:max-w-3xl">
         <div className="relative flex h-full flex-1 items-stretch md:flex-col">
-          <div className="relative flex flex-col w-full flex-grow p-4">
+          <div className="relative flex flex-col w-full flex-grow p-6">
             <form onSubmit={handleSubmit} className="relative">
               <Textarea
                 minRows={3}
@@ -42,7 +41,7 @@ export const ChatInput = ({
                 placeholder="Enter your question..."
                 classNames={{
                   input:
-                    "pl-3 pt-2 border-0 resize-none bg-zinc-800 rounded-2xl text-base",
+                    "pl-3 pt-2 border-0  resize-none bg-zinc-800 rounded-2xl text-base text-white",
                 }}
               />
 

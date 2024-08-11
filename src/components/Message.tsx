@@ -33,14 +33,12 @@ export const Message = ({ content, isUserMessage }: MessageProps) => {
 
           <div className="flex flex-col ml-6 w-full">
             <div className="flex items-center space-x-2">
-              <span className="text-sm font-semibold text-gray-900 dark:text-white">
+              <span className="text-sm font-semibold text-gray-500 ">
                 {isUserMessage ? "You" : "Website"}
               </span>
             </div>
 
-            <p className="text-sm font-normal py-2.5 text-gray-900 dark:text-white">
-              {content}
-            </p>
+            <p className="text-sm font-normal py-2.5 text-white">{content}</p>
           </div>
         </div>
       </div>
