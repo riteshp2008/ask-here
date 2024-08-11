@@ -3,6 +3,7 @@
 import { Button, Textarea } from "@nextui-org/react";
 import { Send } from "lucide-react";
 import { type useChat } from "ai/react";
+import { useState, useEffect } from "react";
 
 type HandleInputChange = ReturnType<typeof useChat>["handleInputChange"];
 type HandleSubmit = ReturnType<typeof useChat>["handleSubmit"];
@@ -21,40 +22,31 @@ export const ChatInput = ({
   input,
   setInput,
 }: ChatInputProps) => {
-  return (
-    <div className="z-10 bg-zinc-900 absolute bottom-0 left-0 w-full">
-      <div className="mx-2 flex flex-row gap-3 md:mx-4 md:last:mb-6 lg:mx-auto lg:max-w-2xl xl:max-w-3xl">
-        <div className="relative flex h-full flex-1 items-stretch md:flex-col">
-          <div className="relative flex flex-col w-full flex-grow p-6">
-            <form onSubmit={handleSubmit} className="relative">
-              <Textarea
-                minRows={3}
-                onChange={handleInputChange}
-                value={input}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSubmit();
-                    setInput("");
-                  }
-                }}
-                placeholder="Enter your question..."
-                classNames={{
-                  input:
-                    "pl-3 pt-2 border-0  resize-none bg-zinc-800 rounded-2xl text-base text-white",
-                }}
-              />
+  const [rows, setRows] = useState(1);
 
-              <Button
-                size="sm"
-                type="submit"
-                className="absolute z-10 border bg-zinc-900 p-1 rounded-md right-2 bottom-2"
-              >
-                <Send className="size-4" />
-              </Button>
-            </form>
-          </div>
-        </div>
+  useEffect(() => {
+    const lineCount = input.split("\n").length;
+    setRows(Math.min(Math.max(lineCount, 1), 5));
+  }, [input]);
+
+  return (
+    <div className="fixed bottom-0 left-0 w-full bg-gray-900 p-4">
+      <div className="max-w-3xl mx-auto">
+        <form onSubmit={handleSubmit} className="relative">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Enter your question..."
+            className="w-full px-4 py-3 text-white placeholder-gray-500 bg-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition-shadow"
+          />
+          <button
+            type="submit"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-900 text-white rounded-full p-2 hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            <Send className="w-5 h-5 " />
+          </button>
+        </form>
       </div>
     </div>
   );
