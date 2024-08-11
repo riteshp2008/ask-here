@@ -18,7 +18,7 @@ export default function Component() {
 
     if (link && isReady) {
       const encodedUrl = encodeURIComponent(link);
-      router.push(`/chat/${encodedUrl}`);
+      router.push(`/${encodedUrl}`);
     }
   };
 
